@@ -30,7 +30,71 @@ conf_dict = {'enableRawOutput':False, 'format':'Json'}
 #		print 'found delimiter'
 #
 #cs.close()
-
+class ThinkGearConnection(object):
+	
+	def __init__(self, host=HOST, port=PORT, appName='Python', username='Anonymous'):
+		self.host = host
+		self.port = port
+		self.appName = appName
+		self.username = username
+		self.sock = socket(AF_INET, SOCK_STREAM)
+		self.sock.connect((self.host, self.port))
+		self.sock.send(json.dumps(conf_dict))
+		self.recording = False
+		self.is_running = True
+		self.data_stream_active = False
+			
+	def data(self):
+		self.data_stream_active = True
+		my_data = None
+		while self.is_running:
+			temp_json = ''
+			cur_char = self.sock.recv(1)
+			while cur_char != '\r':
+				temp_json += cur_char
+				cur_char = self.sock.recv(1)
+			my_data = json.decoder.JSONDecoder().decode(temp_json)
+			yield my_data
+		self.sock.close()
+		self.data_stream_active = False
+		
+	def close(self):
+		self.is_running = False		
+		
+	def setUser(self, userName):
+		self._sendMessage({'setUser':{'userName':userName}})
+		
+	def getUsers(self):
+		self._sendMessage({'getUsers':self.appName})
+		
+	def deleteUser(self, userName, userID):
+		self._sendMessage({'deleteUser':{'userName':self.username, 'userId':userID}})
+		
+	def startRecording(self, rawEeg=True, poorSignalLevel=True, eSense=True, eegPower=True, blinkStrength=True):
+		if self.data_stream_active:
+			return
+		self._sendMessage({'startRecording':{'rawEeg':rawEeg, 'poorSignalLevel':poorSignalLevel, 'sSense':eSense, 'eegPower':eegPower, 'blinkStrength':blinkStrength}, 'applicationName':self.appName})
+		self.recording = True
+		
+	def stopRecording(self):
+		if self.data_stream_active or not self.recording:
+			return
+		self._sendMessage({'stopRecording':self.appName})
+		self.recording = False
+		
+	def cancelRecording(self):
+		if self.data_stream_active or not self.recording:
+			return
+		self._sendMessage({'cancelRecording':self.appName})
+		
+	def getSessionIDs(self):
+		self._sendMessage({'getSessionIds':self.appName})
+		
+	def retrieveSession(self, sessionID):
+		self._sendMessage({'getSessionId':sessionID, 'applicationName':self.appName})
+		
+	def _sendMessage(self, messageDict):
+		self.sock.send(json.dumps(messageDict))
 
 def datastream(host=HOST, port=PORT):
 	cs = socket(AF_INET, SOCK_STREAM)
@@ -52,14 +116,25 @@ def datastream(host=HOST, port=PORT):
 	cs.close()
 	yield data
 
+#printed_connecting = False
+#for d in datastream():
+#	
+#	if u'eSense' in d:
+#		#print 'attention: %f\tmeditation: %f' % (d[u'eSense'][u'attention'], d[u'eSense']['meditation'])
+#		print d
+#	else:
+#		if not printed_connecting:
+#			print 'connecting...'
+#			printed_connecting = True
+	
+tgc = ThinkGearConnection()
 printed_connecting = False
-for d in datastream():
-	
+for d in tgc.data():
 	if u'eSense' in d:
-		#print 'attention: %f\tmeditation: %f' % (d[u'eSense'][u'attention'], d[u'eSense']['meditation'])
-		print d
+		if float(d[u'eSense'][u'meditation']) > 90:
+			say('High Meditation reached, exiting data collection')
+			tgc.close()
 	else:
-		if not printed_connecting:
-			print 'connecting...'
-			printed_connecting = True
-	
+		print d
+
+say('Done with program')
