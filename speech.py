@@ -8,6 +8,7 @@ Copyright (c) 2012 Michael Sobczak. All rights reserved.
 """
 
 import pyttsx
+import code
 
 
 def _build_say():
@@ -36,5 +37,14 @@ def speak_trace(func):
 		return res
 	return inner_func
 
-
+#
+#engine = pyttsx.init()
+#voices = engine.getProperty('voices')
+#for voice in voices:
+#   if voice.name == 'Vicki':
+#       engine.setProperty('voice', voice.id)
+#       print voice
+#       engine.say('The quick brown fox jumped over the lazy dog.')
+#       break
+#engine.runAndWait()
 #code.interact(local=locals())

@@ -39,7 +39,7 @@ class ThinkGearConnection(object):
 		self.username = username
 		self.sock = socket(AF_INET, SOCK_STREAM)
 		self.sock.connect((self.host, self.port))
-		self.sock.send(json.dumps(conf_dict))
+		self._sendMessage(conf_dict)
 		self.recording = False
 		self.is_running = True
 		self.data_stream_active = False
@@ -127,14 +127,14 @@ def datastream(host=HOST, port=PORT):
 #			print 'connecting...'
 #			printed_connecting = True
 	
-tgc = ThinkGearConnection()
-printed_connecting = False
-for d in tgc.data():
-	if u'eSense' in d:
-		if float(d[u'eSense'][u'meditation']) > 90:
-			say('High Meditation reached, exiting data collection')
-			tgc.close()
-	else:
-		print d
-
-say('Done with program')
+#tgc = ThinkGearConnection()
+#printed_connecting = False
+#for d in tgc.data():
+#	if u'eSense' in d:
+#		if float(d[u'eSense'][u'meditation']) > 90:
+#			say('High Meditation reached, exiting data collection')
+#			tgc.close()
+#	else:
+#		print d
+#
+#say('Done with program')
