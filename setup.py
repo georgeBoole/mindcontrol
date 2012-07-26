@@ -14,7 +14,7 @@ def read(fname):
 
 setup(
     name = "mindcontrol",
-    version = "0.6dev",
+    version = "0.7dev",
     author = "Michael Sobczak",
     author_email = "michaelsobczak54@gmail.com",
     description = ("Python wrappers for the NeuroSky Mindwave Headsets"),

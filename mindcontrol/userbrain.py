@@ -164,18 +164,18 @@ class Brain(object):
 			header += '\t%s:\t%s\n' % (p, self.getProperty(p))
 		return header
 
-def testBrain():
-	import code
-	my_brain = Brain()
-	while not my_brain.isConnected():
-		print 'brain not yet connected, trying again in 5 seconds'
-		time.sleep(5)
-	print 'brain now connected presumably, lets get some data'
-	print 'lowAlpha: %d\tattention: %f' % (my_brain.getProperty(lowAlpha), my_brain.getProperty(attention))
-	print 'sleep for 3 seconds then check again'
-	time.sleep(3)
-	print 'new data:'
-	print 'lowAlpha: %d\tattention: %f' % (my_brain.getProperty(lowAlpha), my_brain.getProperty(attention))
-	
-if __name__ == '__main__':
-	testBrain()
+#def testBrain():
+#	import code
+#	my_brain = Brain()
+#	while not my_brain.isConnected():
+#		print 'brain not yet connected, trying again in 5 seconds'
+#		time.sleep(5)
+#	print 'brain now connected presumably, lets get some data'
+#	print 'lowAlpha: %d\tattention: %f' % (my_brain.getProperty(lowAlpha), my_brain.getProperty(attention))
+#	print 'sleep for 3 seconds then check again'
+#	time.sleep(3)
+#	print 'new data:'
+#	print 'lowAlpha: %d\tattention: %f' % (my_brain.getProperty(lowAlpha), my_brain.getProperty(attention))
+#	
+#if __name__ == '__main__':
+#	testBrain()
