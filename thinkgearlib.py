@@ -6,6 +6,10 @@ thinkgearlib.py
 Created by Michael Sobczak on 2012-07-21.
 Copyright (c) 2012 Michael Sobczak. All rights reserved.
 """
+
+"""
+DEPRECATED!!! DONT USE THIS OMG
+"""
 from socket import *
 import hashlib
 import json
@@ -13,7 +17,7 @@ from speech import say
 
 HOST = '127.0.0.1'
 PORT = 13854
-ADDR = (HOST, PORT)
+
 #cs = socket(AF_INET, SOCK_STREAM)
 #cs.connect(ADDR)
 
