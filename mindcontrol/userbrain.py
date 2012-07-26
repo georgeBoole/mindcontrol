@@ -81,8 +81,15 @@ def _datastream(check_continue_func, host=HOST, port=PORT):
 		while cur_char != '\r':
 			temp_json += cur_char
 			cur_char = cs.recv(1)
-		data = json.loads(temp_json)
-		yield data
+		data = None
+		try:
+			data = json.loads(temp_json)
+		except ValueError:
+			print 'ValueError while trying to decode JSON object. discarding JSON that caused the error'
+		if data:
+			yield data
+		else:
+			continue
 	cs.close()
 	yield data
 	
