@@ -57,7 +57,7 @@ parameter_categories = (eSense, eegPower) = ('eSense', 'eegPower')
 NULL_DATA = {poorSignalLevel:200}
 
 def _extract_tuple(data_dict):
-	"""Returns a tuple of the values extracted from a message dictionary"""
+	"""Returns a tuple of the values extracted from a message dictionary."""
 	return (
 		data_dict[eegPower][lowAlpha],
 		data_dict[eegPower][highAlpha],
@@ -72,7 +72,7 @@ def _extract_tuple(data_dict):
 		data_dict[eSense][attention])
 	
 def _datastream(check_continue_func, host=HOST, port=PORT):
-	"""Create a generator that will yield the data messages being sent by the ThinkGearConnector """
+	"""Create a generator that will yield the data messages being sent by the ThinkGearConnector. """
 	cs = socket(AF_INET, SOCK_STREAM)
 	cs.connect((host, port))
 	cs.send(json.dumps(headset_conf_dict))
@@ -119,7 +119,7 @@ class Brain(object):
 	"""An object that represents the brain of a user in a program. """
 	
 	def __init__(self, host=HOST, port=PORT, appName=APP_NAME, userName=USER_NAME):
-		"""Initialize the brain by storing arguments, and setting up the threading model of the object"""
+		"""Initialize the brain by storing arguments, and setting up the threading model of the object."""
 		self.queue = Queue.Queue()
 		self.host = host
 		self.port = port
@@ -132,27 +132,28 @@ class Brain(object):
 		self.producer_thread.start()
 
 	def isConnected(self):
-		"""Return True if the headset connection has been made and proper data is being received"""
+		"""Return True if the headset connection has been made and proper data is being received."""
 		return self.is_connected_flag.isSet()
 		
 		
 	def getProperty(self, propertyName):
-		"""Return the most up to date data on the users brain wave activity"""
+		"""Return the most up to date data on the users brain wave activity."""
 		if not self.queue.empty():
 			self.freshest_data = self.queue.get(False)
 		return self.freshest_data[propertyName] if propertyName in self.freshest_data else 0.0
 		
 	def __del__(self):
-		"""Make sure that the producer thread has been shut down and allowed to terminate"""
+		"""Make sure that the producer thread has been shut down and allowed to terminate."""
 		self.shutdown_stream.set()
 		self.producer_thread.join()	
 		
 	def __str__(self):
-		"""Generate a string giving basic info on the brain"""
+		"""Generate a string giving basic info on the brain."""
 		template = 'Brain:\n\tis connected: %s\n\thost: %s\tport: %d\n\tappName: %s\tuserName: %s'
 		return template % (str(self.isConnected()), str(self.host), self.port, self.app_name, self.user_name)
 		
 	def fullstr(self):
+		"""Generate a string giving the full information regarding the brain."""
 		header = self.__str__() + '\n'
 		for p in brain_parameters:
 			header += '\t%s:\t%s\n' % (p, self.getProperty(p))
