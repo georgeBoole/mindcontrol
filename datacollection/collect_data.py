@@ -1,4 +1,4 @@
-from mindcontrol.userbrain import BrainStream, brain_parameters
+from mindcontrol.userbrain import *
 #from collections import defaultdict
 import sys
 
@@ -29,6 +29,7 @@ def configureDataCollection(config_filename):
 	
 	
 from sqlalchemy import *
+from datetime import datetime
 
 APP_NAME_LENGTH_MAX = 32
 
@@ -41,17 +42,17 @@ def get_columns(headers):
 
 eeg = Table('eeg', metadata,
 	Column('app_name', String(APP_NAME_LENGTH_MAX)),
-	Column('user', Integer, ForeignKey('user.user_id')),
+	Column('origin', Integer, ForeignKey('user.user_id')),
 	Column('session_time', DateTime),
-	Column('clock_time', DateTime, server_default=utcnow()),
+	Column('clock_time', DateTime, server_default=text('NOW()')),
 	*get_columns(brain_parameters))
 	
 blink_event = Table('blink_event', metadata,
 	Column('app_name', String(APP_NAME_LENGTH_MAX)),
-	Column('user', Integer, ForeignKey('user.user_id')),
+	Column('origin', Integer, ForeignKey('user.user_id')),
 	Column('session_time', DateTime),
-	Column('clock_time', DateTime, server_default=utcnow()),
-	Column('blinkStrength'))
+	Column('clock_time', DateTime, server_default=text('NOW()')),
+	Column('blinkStrength', Integer))
 
 metadata.create_all(engine)
 

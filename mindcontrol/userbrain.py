@@ -51,9 +51,14 @@ brain_parameters = (
 # these are the two general categories of brainwave data
 parameter_categories = (eSense, eegPower) = ('eSense', 'eegPower')
 
-def BrainStream(shutdownCheckFunction, host=HOST, port=PORT):
-	# need to return a generator
-	return _datastream(shutdownCheckFunction, host, port)
+class BrainStream(object):
+	def __init__(self, stop_f, host=HOST, port=PORT):
+		self.stop_f = stop_f
+		self.host = host
+		self.port = port
+		
+	def data(self):
+		return _datastream(self.stop_f, self.host, self.port)
 
 # this is what data gets sent by the ThinkGearConnector before the headset connects
 NULL_DATA = {poorSignalLevel:200}
