@@ -8,21 +8,20 @@ Copyright (c) 2012 Michael Sobczak. All rights reserved.
 """
 
 from thinkgearlib import ThinkGearConnection
-from speech import say
 
 def capture_blinks(think_gear_connection, num_blinks):
 	blink_count = 0
 	blink_strength_list = []
-	say('beginning capture of %d blinks' % num_blinks)
+	print('beginning capture of %d blinks' % num_blinks)
 	while blink_count < num_blinks:
-		say('please blink')
+		print('please blink')
 		event_data = think_gear_connection.data().next()
 		while not u'blinkStrength' in event_data:
 			event_data = think_gear_connection.data().next()
 		blink_strength_list.append(event_data[u'blinkStrength'])
 		blink_count += 1
 		print event_data
-		say('blink registered')
+		print('blink registered')
 	return blink_strength_list
 
 NUM_BLINKS = 3

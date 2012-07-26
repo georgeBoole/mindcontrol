@@ -1,0 +1,15 @@
+README.txt
+setup.cfg
+setup.py
+examples/__init__.py
+examples/blinktest.py
+examples/speech.py
+mindcontrol/__init__.py
+mindcontrol/thinkgearlib.py
+mindcontrol/userbrain.py
+mindcontrol.egg-info/PKG-INFO
+mindcontrol.egg-info/SOURCES.txt
+mindcontrol.egg-info/dependency_links.txt
+mindcontrol.egg-info/top_level.txt
+tests/__init__.py
+tests/test_connection.py

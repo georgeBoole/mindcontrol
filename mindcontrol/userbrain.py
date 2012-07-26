@@ -24,8 +24,6 @@ from socket import *
 import json
 import time
 
-# local imports
-from utils import dict_string
 
 # these are used as default parameters for the classes in this module. They come from the default
 # factory settings on the MindWave brand of headsets.
