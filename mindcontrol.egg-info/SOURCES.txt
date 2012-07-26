@@ -5,6 +5,7 @@ examples/__init__.py
 examples/blinktest.py
 examples/speech.py
 mindcontrol/__init__.py
+mindcontrol/brain_data_collector.py
 mindcontrol/thinkgearlib.py
 mindcontrol/userbrain.py
 mindcontrol.egg-info/PKG-INFO

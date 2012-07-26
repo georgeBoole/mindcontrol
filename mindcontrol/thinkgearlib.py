@@ -13,7 +13,7 @@ DEPRECATED!!! DONT USE THIS OMG
 from socket import *
 import hashlib
 import json
-from speech import say
+#from speech import say
 
 HOST = '127.0.0.1'
 PORT = 13854

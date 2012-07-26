@@ -51,6 +51,10 @@ brain_parameters = (
 # these are the two general categories of brainwave data
 parameter_categories = (eSense, eegPower) = ('eSense', 'eegPower')
 
+def BrainStream(shutdownCheckFunction, host=HOST, port=PORT):
+	# need to return a generator
+	return _datastream(shutdownCheckFunction, host, port)
+
 # this is what data gets sent by the ThinkGearConnector before the headset connects
 NULL_DATA = {poorSignalLevel:200}
 
@@ -68,12 +72,16 @@ def _extract_tuple(data_dict):
 		data_dict[poorSignalLevel],
 		data_dict[eSense][meditation],
 		data_dict[eSense][attention])
-	
-def _datastream(check_continue_func, host=HOST, port=PORT):
-	"""Create a generator that will yield the data messages being sent by the ThinkGearConnector. """
+		
+def _create_and_connect_socket(host, port):
 	cs = socket(AF_INET, SOCK_STREAM)
 	cs.connect((host, port))
 	cs.send(json.dumps(headset_conf_dict))
+	return cs
+		
+def _datastream(check_continue_func, host=HOST, port=PORT):
+	"""Create a generator that will yield the data messages being sent by the ThinkGearConnector. """
+	cs = _create_and_connect_socket(host, port)
 	data = None
 	while check_continue_func():
 		temp_json = ''
@@ -163,6 +171,9 @@ class Brain(object):
 		for p in brain_parameters:
 			header += '\t%s:\t%s\n' % (p, self.getProperty(p))
 		return header
+		
+
+	
 
 #def testBrain():
 #	import code
